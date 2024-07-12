@@ -47,14 +47,14 @@ function draw_player()
   p.sprite=dist_anim[(flr(p.y/anim_dist)%#dist_anim)+1]
  elseif p.state=="maplook" then
   anim={8,9,10}
-  p.frame_dur=10
+  p.frame_dur=8
   if p.sprite==anim[#anim] then
    anim={}--todo
    p.animtimer=0--todo
   end
  elseif p.state=="mapaway" then
   anim={10,9,8,0}
-  p.frame_dur=10
+  p.frame_dur=5
   if p.animtimer>=#anim*p.frame_dur-1 then
    p.state="idle"--todo
    anim={}--todo
