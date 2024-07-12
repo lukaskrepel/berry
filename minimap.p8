@@ -177,7 +177,7 @@ function draw_minimap()
  local dcols=flr(cols)
  local drows=flr(rows)
  --
- if dcols==tcols and dcols!= 0 then
+ if (abs(dcols-mmcols)<=mmcols*0.1) then
   unfog()
  end
  --
