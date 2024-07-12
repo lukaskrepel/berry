@@ -51,6 +51,8 @@ function init_minimap()
  fogmap=init_fogmap()
  pixelmap=init_pixelmap()
  mmx,mmy=0,0
+ appear_right=true
+ appear_up=true
 end
 
 function init_pixelmap()
@@ -126,20 +128,26 @@ function toggle_minimap(newstate)
   p.state="maplook"
   sfx(4)
   --
-  local xoffset=mmrows/2+6
-  if not p.face_right then
+  local xoffset=mmrows/2--+6
+  appear_right=((p.face_right and (p.x-mx*128)<128-mmcols-13))
+         or((not p.face_right and (p.x-mx*128)<mmcols+5))
+  if appear_right then
+   xoffset+=6
+  else
    xoffset*=-1
-   xoffset-=2 --shadow on the right
+   xoffset-=8
+  end
+  --
+  appear_up=(p.y-my*128)>mmrows-6
+  --
+  if not p.face_right and appear_right then
+   xoffset-=1
+  elseif p.face_right and not appear_right then
+   xoffset+=1
   end
   --minimap next to player
   mmx=flr(p.x)+4+xoffset-mx*128
   mmy=flr(p.y)+4-my*128
-  --keep on screen
-  if mmx-(mmcols/2)<1 then mmx=(mmcols/2)+1 end--left
-  if mmx>128-mmcols/2-4 then mmx=128-(mmcols/2)-4 end--right
-  if mmy-(mmrows/2)<1 then mmy=(mmrows/2)+1 end--top
-  if mmy>128-(mmrows/2)-4 then mmy=128-(mmrows/2)-4 end--bottom
-  --
   mmx=flr(mmx)
   mmy=flr(mmy)
  end
@@ -177,28 +185,20 @@ function draw_minimap()
  local ox=mid(0,flr(cx/8)-flr(drows/3)+flr(16/3),128-dcols)
  local oy=mid(0,flr(cy/8)-flr(drows/3)+flr(16/3),64-drows)
  local default=0
- --center
- -- local x=(128-cols)/2-1
- -- local y=(128-rows)/2-2
  -- mmx/mmy:
  local x=mmx-dcols/2
  local y=mmy-drows/2
  --alt
- if p.face_right then
+ if appear_right then
   x=mmx-mmcols/2
  else
   x=mmx-dcols+mmcols/2
  end
- y=mmy-dcols
-
- --test test
- -- if p.face_right then
- --  x=mmx+dcols
- -- else
- --  x=mmx-dcols
- -- end
- --
-
+ if appear_up then
+  y=mmy-dcols
+ else
+  y=mmy-2
+ end
  --
  local borderc=7
  line(x+1,y+drows+2,x+dcols+2,y+drows+2,0)--shadow
