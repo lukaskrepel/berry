@@ -23,6 +23,7 @@ function draw_debug_var(x,y)
   state=p.state,
   mxy=mx..","..my,
   mmxy=mmx..","..mmy,
+  pxy=p.x..","..p.y,
   minimap=(minimap and 'true' or 'false'),
   -- ground=(p.on_ground and 'true' or 'false'),
   -- ceil=(p.ceiling and 'true' or 'false'),

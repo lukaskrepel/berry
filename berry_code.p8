@@ -11,6 +11,7 @@ function _init()
  init_pickups()
  init_particles()
  init_tutorial()
+ init_berrymenu()
  mx,my=0,0--todo
  flags={
   player=0,
@@ -35,6 +36,7 @@ function _update60()
  update_particles()
  update_cam()
  update_tutorial()
+ update_berrymenu()
 end
 
 function _draw()
@@ -47,8 +49,9 @@ function _draw()
  draw_debug_col(2,11)
  camera()
  draw_gui(1,1)
- draw_minimap()
+ draw_berrymenu()
  draw_tutorial(10,96)
+ draw_minimap()
  draw_debug_var(1,13)
 end
 
