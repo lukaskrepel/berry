@@ -1,6 +1,7 @@
 -->8
 --camera--
 function draw_sky()
+ if door.closed or oven.draw then return end
  local patgrad={█,…,░,▒,░,…,█}
  local skygrad={1,2,5,0,0}
  local div=128/#patgrad

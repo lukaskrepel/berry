@@ -4,22 +4,24 @@ function init_berrymenu()
  omenu={
   cols=cols,
   rows=rows,
-  x=1+8*2,
-  y=8*3,
+  x=66,
+  y=0,
   w=(4+1)*cols+2,
   h=(6+1)*rows+2,
-  txt={"how to berrypie:","find "..#pickups.." berries", "bring them ⌂","bake! eat!"}
+  txt={"how to play:","find berries", "bring them ⌂ ","eat! sleep!"}
  }
  oven={x=2*8,y=8*8,draw=false}
 end
 
 function update_berrymenu()
- oven.draw=(p.x<=56 and p.y<=64 and p.y>=48)--corner
- -- if abs(p.x-oven.x) <= 4 and abs(p.y-oven.y) <= 4 then
-  -- oven.draw=true
- -- else
-  -- oven.draw=false
- -- end
+ oven.draw=p.x<=48 and p.y<=64-- and p.y>=48
+ if oven.draw then
+  oven.draw=true--corner
+  if berries==#pickups then
+   door.closed=true
+   pie.active=true
+  end
+ end
 end
 
 function draw_berrymenu()
@@ -33,7 +35,7 @@ function draw_berrymenu()
  local rows=omenu.rows --todo
  local cols=omenu.cols --todo
  --
- drawtextbox(x+w+3,y,omenu.txt,{11,8,12,10})
+ drawtextbox(x,y+h+3,omenu.txt,{11,8,12,10})
  --
  rect(x,y,x+w,y+h,7)
  rectfill(x+1,y+1,x+w-1,y+h-1, 0)

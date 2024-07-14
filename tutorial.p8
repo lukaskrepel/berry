@@ -22,15 +22,18 @@ function update_tutorial()
   tutbool[4]=false
  end
  --
- for i=1, #tutbool do
-  if tutbool[i] then
-   return
-  end
- end
- tut_countdown-=0.5
+ -- for i=1, #tutbool do
+ --  if tutbool[i] then
+ --   return
+ --  end
+ -- end
+ -- tut_countdown-=0.5
 end
 
 function draw_tutorial(x,y)
+ if not oven.draw then
+  return
+ end
  if tut_countdown<=0 then return end
  if tut_countdown<tut_time-tut_delay then
   y=y-tut_countdown+tut_time-tut_delay

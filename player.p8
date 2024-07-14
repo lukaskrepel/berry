@@ -31,7 +31,9 @@ end
 function draw_player()
  local anim={}
  p.anim_dur=0
- if p.state=="idle" then
+ if p.state=="sleep" then
+  p.sprite=11
+ elseif p.state=="idle" then
   -- p.sprite=0
   anim={0}
  elseif p.state=="jump" then
@@ -71,6 +73,10 @@ function draw_player()
 end
 
 function update_player()
+ if p.state=="sleep" then
+  p.x,p.y=16,40
+  return
+ end
  move_player()
  if p.x<0 then
   p.x=127*8
