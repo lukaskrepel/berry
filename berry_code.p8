@@ -4,6 +4,7 @@ __lua__
 
 function _init()
  printh("---init---")
+ poke(0x5f5c, 255)
  gravity=0.2
  init_player()
  init_minimap()
