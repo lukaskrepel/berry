@@ -25,7 +25,7 @@ end
 
 function update_pie()
  if pie.active and not pie.eaten then
-  if abs(p.x-pie.x) <= 4 and abs(p.y-pie.y) <= 4 then
+  if abs(p.x-pie.x) <= 4 and abs(p.y-pie.y) <= 8 then
    sfx(2)
    pie.active=false
    pie.eaten=true
