@@ -2,6 +2,7 @@
 --pickups--
 function init_pickups()
  printh("init_pickups")
+ berries=0
  pickups={}
  for ty=0,64 do
   for tx=0,128 do
