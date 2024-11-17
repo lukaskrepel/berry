@@ -75,6 +75,8 @@ function init_pixelmap()
   mushroombark=3,
   ladder=14,
   roof=8,
+  bed=7,
+  kitchen=9,
   berry="berry"
  }
  local function assign_tiles()
@@ -102,6 +104,8 @@ function init_pixelmap()
   map_px({101,102,103,105,121},mmc.mushroom)
   map_px({104,120},mmc.mushroombark)
   map_px({84,68,79,111},mmc.ladder)
+  map_px({126,127},mmc.bed)
+  map_px({118,119},mmc.kitchen)
   map_px({16},mmc.berry)
   return mapping
  end
