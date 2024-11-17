@@ -10,11 +10,11 @@ function init_berrymenu()
   h=(6+1)*rows+2,
   txt={"how to play:","find berries", "bring them ⌂ ","eat! sleep!"}
  }
- oven={x=2*8,y=8*8,draw=false}
+ oven={x=2*8,y=8*8,draw=true}
 end
 
 function update_berrymenu()
- oven.draw=p.x<=48 and p.y<=64-- and p.y>=48
+ oven.draw=p.x<=56 and p.y<=64-- and p.y>=48
  if oven.draw then
   oven.draw=true--corner
   if berries==#pickups then
