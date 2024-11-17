@@ -279,22 +279,3 @@ function land()
  end
  p.vy=0
 end
-
-function action()
- if berries>0 then
-  local dir=0
-  if not p.face_right then
-   dir *= -1
-  end
-  local tx=(p.x+4) / 8+dir
-  local ty=flr(p.y / 8)
-  if mget(tx,ty)==0 then
-   if mget(tx,ty+1)==64 then
-    berries -= 1
-    sfx(1)
-    create_plant(tx,ty)
-    spawn_particles((tx * 8)+4,(ty * 8)+8)
-   end
-  end
- end
-end
