@@ -53,6 +53,34 @@ function init_minimap()
  mmx,mmy=0,0
  appear_right=true
  appear_up=true
+
+local house_top_left={1,0}
+local house_bottom_right={7,9}
+
+ -- Define coordinates to skip (x,y pairs)
+ -- these are exception tiles just outside the house, while in the rectangle
+ local skip_coords = {
+  {1,0}, {1,1}, {2,0},
+  {6,0}, {7,0}, {7,1}
+ }
+ 
+ -- Helper function to check if coordinate should be skipped
+ local function should_skip(x,y)
+  for _,coord in pairs(skip_coords) do
+   if coord[1]==x and coord[2]==y then
+    return true
+   end
+  end
+  return false
+ end
+ 
+ for x=house_top_left[1],house_bottom_right[1] do
+  for y=house_top_left[2],house_bottom_right[2] do
+   if not should_skip(x,y) then
+    fogmap[x][y]=0
+   end
+  end
+ end
 end
 
 function init_pixelmap()
