@@ -84,6 +84,9 @@ function update_player()
  if p.x>127*8 then
   p.x=127*8--0
  end
+ if oven.draw then
+  return -- so the first area is not marked as seen.
+ end
  mark_seen(mx,my)
 end
 
@@ -134,11 +137,11 @@ function move_player()
  --
  if p.coyotetimer>0 then p.coyotetimer -= 1 end
  --
- local center=5
+ local center=1
  if p.face_right then
   center=2
  end
- p.on_ladder=hit_t(p.x+p.vx+center,p.y+p.vy+3,0,0,flags.ladder)
+ p.on_ladder=hit_t(p.x+p.vx+center,p.y+p.vy+3,5,3,flags.ladder) -- TODO make hitbox bigger
  if p.state=="climbing" then
   if p.on_ladder==false or dx!=0 or btn(❎) then
    p.state="idle"
@@ -157,8 +160,9 @@ function move_player()
   end
  end
  if p.on_ladder and p.state=="climbing" then
-  p.face_right=true
-  p.x=flr((p.x+4)/8)*8
+  --p.x=flr((p.x+4)/8)*8 -- this was only accurate when facing left.
+  p.x=global_x_test*8 -- todo this is a temp fix
+  p.face_right=true -- this is how the climbing sprite is drawn.
   p.vx=0
   if dy>0 then
    p.vy=p.speed*0.75

@@ -20,14 +20,14 @@ function draw_debug_var(x,y)
  if not debug then return end
  local c=11
  local strings={
-  state=p.state,
+--   state=p.state,
   mxy=mx..","..my,
-  mmxy=mmx..","..mmy,
-  pxy=p.x..","..p.y,
-  minimap=(minimap and 'true' or 'false'),
+--   mmxy=mmx..","..mmy,
+--   pxy=p.x..","..p.y,
+--   minimap=(minimap and 'true' or 'false'),
   -- ground=(p.on_ground and 'true' or 'false'),
   -- ceil=(p.ceiling and 'true' or 'false'),
-  -- ladder=(p.on_ladder and 'true' or 'false'),
+  ladder=(p.on_ladder and 'true' or 'false'),
   -- bottom_y=bottom_y,
   -- platform=(p.on_platform and 'true' or 'false'),
  }

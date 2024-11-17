@@ -10,20 +10,24 @@ function hit_t(x,y,w,h,f)
  h-=1
  coords={x,y,(x+w),(y+h)}
  add(drawdebug,coords)
- collide=false
+--  collide=false
  for i=x,x+w,w do
   if fget(mget(i/8,y/8),f) or
    fget(mget(i/8,(y+h)/8),f) then
    collide=true
+   global_x_test = flr(i/8) -- temp
+   return collide
   end
  end
  for i=y,y+h,h do
   if fget(mget(x/8,i/8),f) or
      fget(mget((x+w)/8,i/8),f) then
    collide=true
+   global_x_test = flr((x+w)/8) -- temp
+   return collide
   end
  end
- return collide
+ return false --collide
 end
 
 function hit_t_below(x,y,w,h,f)
