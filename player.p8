@@ -112,7 +112,7 @@ function move_player()
  end -- todo?
  if p.state=="maplook" then
   if p.sprite==10 then--(last maplook frame)
-   if btnp(🅾️) then
+   if btnp(🅾️) or btnp(❎) or btn(⬅️) or btn(➡️) or btn(⬆️) or btn(⬇️) then
     toggle_minimap(false)
    end
   end
