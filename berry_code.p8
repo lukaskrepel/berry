@@ -14,6 +14,7 @@ function _init()
  init_tutorial()
  init_berrymenu()
  init_pie()
+ init_music()
  mx,my=0,0--todo
  flags={
   player=0,
@@ -40,6 +41,7 @@ function _update60()
  update_tutorial()
  update_berrymenu()
  update_pie()
+ update_music()
 end
 
 function _draw()
