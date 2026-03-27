@@ -29,9 +29,6 @@ function update_tutorial()
 end
 
 function draw_tutorial(x,y)
- if not oven.draw then
-  return
- end
  if tut_countdown<=0 then return end
  if tut_countdown<tut_time-tut_delay then
   y=y-tut_countdown+tut_time-tut_delay
