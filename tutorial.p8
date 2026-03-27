@@ -1,7 +1,7 @@
 -->8
 --tutorial--
 function init_tutorial()
- tut_time=200
+ tut_time=600
  tut_countdown=tut_time
  tut_delay=40
  tutstrings={--add extra space for btns
@@ -10,7 +10,7 @@ function init_tutorial()
   "⬅️➡️ to walk  ",
   "⬆️⬇️ to climb ladders  "
  }
- tutbool={true,true,true,true}--todo proper code
+ tutbool={true,true,true,true}
 end
 
 function update_tutorial()
@@ -21,13 +21,11 @@ function update_tutorial()
  elseif p.state=="climbing" then
   tutbool[4]=false
  end
- --
- -- for i=1, #tutbool do
- --  if tutbool[i] then
- --   return
- --  end
- -- end
- -- tut_countdown-=0.5
+ if not tutbool[1] and not tutbool[2] and not tutbool[3] and not tutbool[4] then
+  tut_countdown-=1
+ else
+  tut_countdown=tut_time
+ end
 end
 
 function draw_tutorial(x,y)
@@ -40,7 +38,7 @@ function draw_tutorial(x,y)
  end
  --
  local tutcols={11,8,12,10}
- for idx, str in pairs(tutcols) do
+ for idx, col in pairs(tutcols) do
   if not tutbool[idx] then
    tutcols[idx]=5
   end
