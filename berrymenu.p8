@@ -14,7 +14,7 @@ function init_berrymenu()
 end
 
 function update_berrymenu()
- oven.draw=p.x<=56 and p.y<=64-- and p.y>=48
+ oven.draw=p.x<=48 and p.y<=64
  if oven.draw then
   oven.draw=true--corner
   if berries==#pickups then
