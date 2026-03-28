@@ -11,6 +11,7 @@ function init_tutorial()
   "⬆️⬇️ to climb ladders  "
  }
  tutbool={true,true,true,true}
+ tut_finished=false
 end
 
 function update_tutorial()
@@ -22,6 +23,7 @@ function update_tutorial()
   tutbool[4]=false
  end
  if not tutbool[1] and not tutbool[2] and not tutbool[3] and not tutbool[4] then
+  tut_finished=true
   tut_countdown-=1
  else
   tut_countdown=tut_time

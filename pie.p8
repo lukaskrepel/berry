@@ -46,8 +46,10 @@ function draw_pie()
   spr(32,pie.x,pie.y)
   spawn_particles(pie.x+4,pie.y+6)
  end
- if door.closed then
+ if door.closed or not tut_finished then
   mset(door.x,door.y,door.s)
+ else
+  mset(door.x,door.y,78)
  end
 end
 
@@ -62,6 +64,7 @@ function draw_fade()
   if fade>=#fadepat+wait+2 then
    local endtext={"delicious","    berrypie!","thank you for","♥ playing ♥"}
    drawtextbox(37,47,endtext,{11,8,12,10})
+   stop_music()
   end
  end
 end
