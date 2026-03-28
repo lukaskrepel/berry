@@ -151,7 +151,7 @@ function move_player()
   bounce()
  end
  p.on_ground=is_grounded(p,flags.ground)
- p.on_platform=is_grounded(p,flags.platform) and p.y+7<flr((p.y+p.vy+8)/8)*8
+ p.on_platform=is_grounded(p,flags.platform) and p.y+7<flr((p.y+p.vy+8)/8)*8 -- only consider it a platform if we're not moving down into it, otherwise we might want to land on it.
  --
  --ladder
  if p.on_ladder and p.state=="idle" then
