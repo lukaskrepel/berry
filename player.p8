@@ -151,7 +151,7 @@ function move_player()
   bounce()
  end
  p.on_ground=is_grounded(p,flags.ground)
- p.on_platform=is_grounded(p,flags.platform)
+ p.on_platform=is_grounded(p,flags.platform) and p.y+7<flr((p.y+p.vy+8)/8)*8
  --
  --ladder
  if p.on_ladder and p.state=="idle" then
@@ -200,7 +200,7 @@ function move_player()
  end
  if dx != 0 and (p.on_ground or p.on_platform) then
   p.state="walk"
-  p.y=ceil((p.y-4)/8)*8--todo
+  p.y=flr(p.y/8)*8
   p.vy=0
  end
  if btnp(❎) and (p.on_ground or p.on_platform or p.coyotetimer>0) then
