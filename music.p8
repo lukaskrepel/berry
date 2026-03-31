@@ -40,10 +40,17 @@ function update_instruments()
 		world_area = not cave_area and not mushroom_area and not secret_area and not mountain_area
 	end
 	--
-	melody = world_area or mountain_area
+	melody = (world_area or mountain_area)
 	bass = world_area or secret_area or cave_area or mountain_area
 	drums = world_area or secret_area or mushroom_area
 	extra = berries == #pickups or not tut_finished
+
+	if pie.eaten then
+		melody = false
+		bass = true
+		drums = false
+		extra = false
+	end
 
 	adaptive_music()
 	if prev_instruments[1] != melody or prev_instruments[4] != extra then
