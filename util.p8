@@ -9,7 +9,8 @@ function lerp(a,b,t)
  return v
 end
 
-function drawtextbox(x,y,strings,cols)
+function drawtextbox(x,y,strings,cols,extra_h)
+ extra_h=extra_h or 0
  local longest_tut=0
  for i=1, #strings do
   local chars=#strings[i]
@@ -19,7 +20,7 @@ function drawtextbox(x,y,strings,cols)
  end
  local extra=0--sprite?
  local x2=x+extra+4*longest_tut+2
- local y2=y+10+4*#strings
+ local y2=y+10+4*#strings+extra_h
  local guicol=7
  local greyedcol=5
  local bgcol=0
