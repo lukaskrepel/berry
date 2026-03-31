@@ -27,7 +27,8 @@ end
 
 function update_instruments()
 	prev_instruments = {melody, bass, drums, extra}
-	if not tut_finished then
+	home_area = door.closed or oven.draw -- make it make sense, this code is unreadable
+	if home_area then
 		melody = false
 		bass = false
 		drums = false
@@ -43,7 +44,7 @@ function update_instruments()
 	melody = (world_area or mountain_area)
 	bass = world_area or secret_area or cave_area or mountain_area
 	drums = world_area or secret_area or mushroom_area
-	extra = berries == #pickups or not tut_finished
+	extra = berries == #pickups or home_area
 
 	if pie.eaten then
 		melody = false
