@@ -58,7 +58,7 @@ function draw_fade()
   fade+=0.03
   local wait=5
   if fade>wait+1 then
-   fillp(fadepat[flr(fade-wait)])
+   fillp(fadepat[min(#fadepat,flr(fade-wait))])
    rectfill(0,0,128,128,0)
   end
   if fade>=#fadepat+wait+2 then

@@ -2,6 +2,7 @@
 --minimap--
 function init_fogmap(_dflt)
  seen={}
+ seen_set={}
  local ret={} 
  for x=0,128 do
   ret[x]={}
@@ -13,30 +14,30 @@ function init_fogmap(_dflt)
 end
 
 function mark_seen(mx,my)
- for i=1,#seen do
-  if seen[i].x==mx and seen[i].y==my then
-   return
-  end
- end
+ local key=mx*200+my
+ if seen_set[key] then return end
+ seen_set[key]=true
  add(seen,{x=mx,y=my,fog=30})
 end
 
 function unfog()
- for i=1,#seen do
+ local max_iters=512
+ local iters=0
+ for i=#seen,1,-1 do
   local fogtile=seen[i]
   if fogtile.fog>0 then
-   local mx=fogtile.x
-   local my=fogtile.y
-   local tx=mx*16
-   local ty=my*16
+   local tx=fogtile.x*16
+   local ty=fogtile.y*16
    for x=tx,tx+15 do
     for y=ty,ty+15 do
-      if rnd{true,false,false} then
-       fogmap[x][y]=0
-      end
+     if rnd{true,false,false} then
+      fogmap[x][y]=0
+     end
+     iters+=1
     end
    end
    fogtile.fog-=1
+   if iters>=max_iters then return end
   end
  end
 end
@@ -152,11 +153,9 @@ end
 function toggle_minimap(newstate)
  tutbool[2]=false
  if newstate==false then
-  printh("minimap off")
   p.state="mapaway"
   sfx(5)
  else
-  printh("minimap on")
   p.state="maplook"
   sfx(4)
   --
@@ -240,7 +239,7 @@ function draw_minimap()
   for c=0,dcols-1 do
    local tx=flr(ox+c)
    local ty=flr(oy+r)
-   cl=pixelmap[tx][ty]
+   local cl=pixelmap[tx][ty]
    if tx==ptx and ty==pty then
     cl=pcl
    end

@@ -6,7 +6,7 @@ function init_berrymenu()
   rows=rows,
   x=66,
   y=0,
-  w=(4+1)*cols+2,
+  w=(4+1)*cols+2, -- berry icon is 4px wide; stride of 5 is intentional
   h=(6+1)*rows+2,
   txt={"how to play:","find berries", "bring them ⌂ ","eat! sleep!"}
  }

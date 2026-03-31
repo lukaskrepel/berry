@@ -3,9 +3,6 @@
 function draw_debug_col()
  if not debug then return end
  --
- mset(0,8,63)
- mset(1,8,63)
- --
  for i=1,#drawdebug do
   local coords=drawdebug[i]
   local c=rnd(15)

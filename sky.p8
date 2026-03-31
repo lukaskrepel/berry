@@ -9,10 +9,10 @@ function draw_sky()
   local col1=skygrad[mid(1,ry+1,#skygrad-1)]
   local col2=skygrad[mid(2,ry+2,#skygrad)]
   for i=1,#patgrad do
-   x1=0
-   x2=128*8
-   y1=ry*128+(div*(i-1))
-   y2=y1+(div)
+   local x1=0
+   local x2=128*8
+   local y1=ry*128+(div*(i-1))
+   local y2=y1+(div)
    fillp(█)
    rectfill(x1,y1,x2,y2,col1)
    if i>1 and i<#patgrad then

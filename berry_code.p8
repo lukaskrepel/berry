@@ -3,7 +3,6 @@ version 42
 __lua__
 
 function _init()
- printh("---init---")
  poke(0x5f5c, 255)
  gravity=0.2
  init_player()
@@ -30,8 +29,8 @@ end
 function _update60()
  drawdebug={}
  drawdist=0
- draw=abs(ctx-cx)<=drawdist and abs(cty-cy)<=drawdist
- if draw then
+ local player_active=abs(ctx-cx)<=drawdist and abs(cty-cy)<=drawdist
+ if player_active then
   update_player()
  end
  update_minimap()
@@ -66,6 +65,8 @@ function draw_world()
  if door.closed or oven.draw then
   map(1,0,8,0,7,10)
  else
-  map(0,0,0,0,128,64)
+  local tx=flr(cx/8)
+  local ty=flr(cy/8)
+  map(tx,ty,tx*8,ty*8,min(128-tx,17),min(64-ty,17))
  end
 end

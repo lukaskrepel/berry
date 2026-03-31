@@ -52,9 +52,11 @@ function update_instruments()
 		extra = false
 	end
 
-	adaptive_music()
-	if prev_instruments[1] != melody or prev_instruments[4] != extra then
-		music(start_track)
+	if prev_instruments[1] != melody or prev_instruments[2] != bass or prev_instruments[3] != drums or prev_instruments[4] != extra then
+		adaptive_music()
+		if prev_instruments[1] != melody or prev_instruments[4] != extra then
+			music(start_track)
+		end
 	end
 end
 

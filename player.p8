@@ -29,8 +29,7 @@ end
 
 
 function draw_player()
- local anim={}
- p.anim_dur=0
+ local anim
  if p.state=="sleep" then
   p.sprite=11
  elseif p.state=="idle" then
@@ -51,7 +50,7 @@ function draw_player()
   anim={8,9,10}
   p.frame_dur=8
   if p.sprite==anim[#anim] then
-   anim={}--todo
+   anim=nil--todo
    p.animtimer=0--todo
   end
  elseif p.state=="mapaway" then
@@ -59,10 +58,10 @@ function draw_player()
   p.frame_dur=5
   if p.animtimer>=#anim*p.frame_dur-1 then
    p.state="idle"--todo
-   anim={}--todo
+   anim=nil--todo
   end
  end
- if #anim>0 then
+ if anim then
   p.animtimer+=1
   if p.animtimer>=#anim*p.frame_dur then
     p.animtimer=0
@@ -77,12 +76,16 @@ function update_player()
   p.x,p.y=16,40
   return
  end
+ local prev_room_y=flr((p.y+8)/128)
  move_player()
+ if flr((p.y+8)/128)<prev_room_y and p.vy<0 then
+  p.vy-=0.8
+ end
  if p.x<0 then
   p.x=127*8
  end
  if p.x>127*8 then
-  p.x=127*8--0
+  p.x=127*8
  end
  if oven.draw then
   return -- so the first area is not marked as seen.
@@ -141,7 +144,8 @@ function move_player()
  if p.face_right then
   center=2
  end
- p.on_ladder=hit_t(p.x+p.vx+center,p.y+p.vy+3,5,3,flags.ladder) -- TODO make hitbox bigger
+ local ladder_x
+ p.on_ladder, ladder_x = hit_t(p.x+p.vx+center,p.y+p.vy+3,5,3,flags.ladder) -- TODO make hitbox bigger
  if p.state=="climbing" then
   if p.on_ladder==false or dx!=0 or btn(❎) then
    p.state="idle"
@@ -161,7 +165,7 @@ function move_player()
  end
  if p.on_ladder and p.state=="climbing" then
   --p.x=flr((p.x+4)/8)*8 -- this was only accurate when facing left.
-  p.x=global_x_test*8 -- todo this is a temp fix
+  p.x=ladder_x*8
   p.face_right=true -- this is how the climbing sprite is drawn.
   p.vx=0
   if dy>0 then
@@ -214,12 +218,10 @@ function move_player()
   p.vy+=gravity
  end
  -- max speed
- vymax=2
+ local vymax=2
  if p.vy>vymax then p.vy=vymax end
  if p.ceiling then
   if p.vy<0 then
-   printh("stick!")
-   printh("aaa")
    p.y=ceil((p.y+p.vy) / 8) * 8
    p.vy=0
   end
@@ -234,7 +236,7 @@ function move_player()
  else
   if not (p.on_ground or p.on_platform) then
    if p.vy>0 then
-    if p.y % 8==0 then
+    if flr(p.y) % 8==0 and p.state!="falling" and p.state!="jump" then
      p.coyotetimer=p.coyotet
     end
     p.state="falling"
@@ -247,7 +249,6 @@ end
 function jump()
  tutbool[1]=false--todo
  if not hit_t(p.x,p.y-4,7,8,flags.ground) then
-  printh("-jump")
   p.state="jump"
   p.vy=p.jumpf * -1
   p.on_ground=false
@@ -258,7 +259,6 @@ end
 
 function bounce()
  if not hit_t(p.x,p.y-4,7,8,flags.ground) then
-  printh("-bounce")
   p.state="jump"--todo bounce state?
   -- p.vy=p.jumpf * -1
   p.vy=p.vy*-1*2
@@ -267,13 +267,13 @@ function bounce()
    p.vy=minbounce
   end
   p.on_ground=false
+  p.coyotetimer=0
   sfx(6)
   dust_particles(p.x+4,p.y+8)
  end
 end
 
 function land()
- printh("--land")
  p.state="idle"
  sfx(1)
  --p.on_ground=true

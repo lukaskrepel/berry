@@ -1,7 +1,6 @@
 -->8
 --pickups--
 function init_pickups()
- printh("init_pickups")
  berries=0
  pickups={}
  for ty=0,64 do
@@ -13,6 +12,9 @@ function init_pickups()
      ty=ty,
      x=tx * 8,
      y=ty * 8,
+     phase=tx/8,
+     smx=flr(tx/16),
+     smy=flr(ty/16),
      active=true
     }
     add(pickups,pickup)
@@ -23,13 +25,11 @@ function init_pickups()
 end
 
 function update_pickups()
+ local t=time()*0.5
  for i=1,#pickups do
   local pickup=pickups[i]
-  if pickup.active then
-   local amplitude=1.5
-   local frequency=0.5
-   local phase=pickup.tx / 8
-   pickup.y=pickup.ty * 8+amplitude * sin((time() * frequency+phase) % 1)
+  if pickup.active and pickup.smx==mx and pickup.smy==my then
+   pickup.y=pickup.ty*8+1.5*sin((t+pickup.phase)%1)
    if abs(p.x-pickup.x) <= 4 and abs(p.y-pickup.y) <= 4 then
     sfx(2)
     pickup.active=false
