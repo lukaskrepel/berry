@@ -12,6 +12,7 @@ __lua__
 #include particles.p8
 #include pickups.p8
 #include player.p8
+#include platforms.p8
 #include sky.p8
 #include tutorial.p8
 #include util.p8
