@@ -154,8 +154,20 @@ function move_player()
  if is_grounded(p,flags.bouncy) then
   bounce()
  end
+ -- carry player with moving platform
+ if p.active_platform then
+  p.y+=p.active_platform.y-p.active_platform.prev_y
+ end
  p.on_ground=is_grounded(p,flags.ground)
- p.on_platform=is_grounded(p,flags.platform) and p.y+7<flr((p.y+p.vy+8)/8)*8 -- only consider it a platform if we're not moving down into it, otherwise we might want to land on it.
+ local static_plat=is_grounded(p,flags.platform) and p.y+7<flr((p.y+p.vy+8)/8)*8
+ local moving_plat,moving_plat_obj=is_on_moving_platform(p)
+ if moving_plat then
+  p.on_platform=true
+  p.active_platform=moving_plat_obj
+ else
+  p.on_platform=static_plat
+  p.active_platform=nil
+ end
  --
  --ladder
  if p.on_ladder and p.state=="idle" then
@@ -204,7 +216,11 @@ function move_player()
  end
  if dx != 0 and (p.on_ground or p.on_platform) then
   p.state="walk"
-  p.y=flr(p.y/8)*8
+  if p.active_platform then
+   p.y=p.active_platform.y-8
+  else
+   p.y=flr(p.y/8)*8
+  end
   p.vy=0
  end
  if btnp(❎) and (p.on_ground or p.on_platform or p.coyotetimer>0) then
@@ -279,7 +295,82 @@ function land()
  --p.on_ground=true
  dust_particles(p.x+4,p.y+8)
  if p.vy>0 then
-  p.y=flr((p.y+p.vy) / 8) * 8
+  if p.active_platform then
+   p.y=p.active_platform.y-8
+  else
+   p.y=flr((p.y+p.vy) / 8) * 8
+  end
  end
  p.vy=0
+end
+
+-- moving platforms
+platforms={}
+
+local cloud_tiles={[80]=true,[81]=true,[82]=true}
+
+function is_cloud_tile(t)
+ return cloud_tiles[t]==true
+end
+
+function init_platforms()
+ platforms={}
+ local visited={}
+ for ty=0,63 do
+  for tx=0,127 do
+   local tile=mget(tx,ty)
+   if is_cloud_tile(tile) and not visited[ty*128+tx] then
+    local plat={
+     base_x=tx*8,
+     base_y=ty*8,
+     tiles={},
+     phase=((tx*7+ty*13)%32)/32
+    }
+    local cx=tx
+    while cx<128 and is_cloud_tile(mget(cx,ty)) and not visited[ty*128+cx] do
+     visited[ty*128+cx]=true
+     add(plat.tiles,mget(cx,ty))
+     mset(cx,ty,0)
+     cx+=1
+    end
+    plat.y=plat.base_y
+    plat.prev_y=plat.base_y
+    plat.t=0
+    add(platforms,plat)
+   end
+  end
+ end
+end
+
+function update_platforms()
+ if abs(ctx-cx)>0 or abs(cty-cy)>0 then return end
+ for plat in all(platforms) do
+  plat.prev_y=plat.y
+  plat.t+=1/60
+  plat.y=plat.base_y+sin(plat.t*0.08+plat.phase)*4
+ end
+end
+
+function draw_platforms()
+ for plat in all(platforms) do
+  for i=1,#plat.tiles do
+   spr(plat.tiles[i],plat.base_x+(i-1)*8,plat.y)
+  end
+ end
+end
+
+function is_on_moving_platform(unit)
+ if unit.vy<0 then return false,nil end
+ local foot_y=unit.y+unit.vy+8
+ local px1=unit.x
+ local px2=unit.x+7
+ for plat in all(platforms) do
+  local plat_right=plat.base_x+#plat.tiles*8-1
+  if px2>=plat.base_x and px1<=plat_right then
+   if foot_y>=plat.y and foot_y<plat.y+4 and unit.y+7<plat.y+1 then
+    return true,plat
+   end
+  end
+ end
+ return false,nil
 end

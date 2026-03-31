@@ -6,6 +6,7 @@ function _init()
  poke(0x5f5c, 255)
  gravity=0.2
  init_player()
+ init_platforms()
  init_minimap()
  init_cam()
  init_pickups()
@@ -30,6 +31,7 @@ function _update60()
  drawdebug={}
  drawdist=0
  local player_active=abs(ctx-cx)<=drawdist and abs(cty-cy)<=drawdist
+ update_platforms()
  if player_active then
   update_player()
  end
@@ -47,6 +49,7 @@ function _draw()
  cls(0)
  draw_sky()
  draw_world()
+ draw_platforms()
  draw_particles()
  draw_pickups()
  draw_pie()
