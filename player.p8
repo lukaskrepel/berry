@@ -154,7 +154,7 @@ function move_player()
    p.state="idle"
   end
  end
- if is_grounded(p,flags.bouncy) then
+ if is_grounded(p,flags.bouncy) or is_on_bouncing_mushroom(p) then
   bounce()
  end
  p.on_ground=is_grounded(p,flags.ground)
@@ -274,6 +274,7 @@ end
 
 function bounce()
  if not hit_t(p.x,p.y-4,7,8,flags.ground) then
+  start_mushroom_bounce(p.x,p.y,p.vy)
   p.state="jump"--todo bounce state?
   -- p.vy=p.jumpf * -1
   p.vy=p.vy*-1*2

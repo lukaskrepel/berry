@@ -32,6 +32,7 @@ function _update60()
  drawdist=0
  local player_active=abs(ctx-cx)<=drawdist and abs(cty-cy)<=drawdist
  update_platforms()
+ update_bouncing_tiles()
  if player_active then
   update_player()
  end
@@ -50,6 +51,7 @@ function _draw()
  draw_sky()
  draw_world()
  draw_platforms()
+ draw_bouncing_tiles()
  draw_particles()
  draw_pickups()
  draw_pie()
