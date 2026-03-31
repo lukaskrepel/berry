@@ -1,9 +1,17 @@
 -- music system
 start_track = 0
 
+melody = true
+bass = true
+drums = true
+extra = true
+
 function init_music()
     -- initialize music system
-	instruments={true,true,true,true}
+	melody = false
+	bass = false
+	drums = false
+	extra = true
 	update_instruments()
     music(start_track)
 end
@@ -18,41 +26,49 @@ function stop_music()
 end
 
 function update_instruments()
-	-- melody
-	-- base
-	-- drums
-	-- extra
-	-- TODO this is a placeholder, adjust instruments based on game state, e.g. player position, events, etc.
-    if oven.draw == true then
-        instruments = {false, false, false, true}--start area -- only extra
-    elseif my == 3 then
-    	instruments = {false, true, false, false} --lowest level -- only base
-    elseif my == 2 then
-        instruments = {false, true, true, false} --mid level -- drums and bass
-    else
-        instruments = {true, true, true, false} --top level -- melody, bass and drums, no extra
-    end
+	prev_instruments = {melody, bass, drums, extra}
+	if not tut_finished then
+		melody = false
+		bass = false
+		drums = false
+		extra = true
+	else
+		cave_area = (my == 3 and mx <= 3) or(mx == 0 and my == 1)
+		mushroom_area = my == 3 and mx >= 4
+		secret_area = (my == 2 and mx <= 1) or (my == 1 and mx == 1)
+		mountain_area = mx == 7 and my <= 2
+		world_area = not cave_area and not mushroom_area and not secret_area and not mountain_area
+	end
+	--
+	melody = world_area or mountain_area
+	bass = world_area or secret_area or cave_area or mountain_area
+	drums = world_area or secret_area or mushroom_area
+	extra = berries == #pickups or not tut_finished
+
 	adaptive_music()
+	if prev_instruments[1] != melody or prev_instruments[4] != extra then
+		music(start_track)
+	end
 end
 
 function adaptive_music()
 	for i=0x3100,0x3140,4 do
-		if instruments[1] then
+		if melody then
 			poke(i,peek(i)&0b10111111)
 		else
 			poke(i,peek(i)|0b01000000)
 		end
-		if instruments[2] then
+		if bass then
 			poke(i+1,peek(i+1)&0b10111111)
 		else
 			poke(i+1,peek(i+1)|0b01000000)
 		end
-		if instruments[3] then
+		if drums then
 			poke(i+2,peek(i+2)&0b10111111)
 		else
 			poke(i+2,peek(i+2)|0b01000000)
 		end
-		if instruments[4] then
+		if extra then
 			poke(i+3,peek(i+3)&0b10111111)
 		else
 			poke(i+3,peek(i+3)|0b01000000)
