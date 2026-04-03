@@ -78,7 +78,7 @@ function update_player()
  end
  local prev_room_y=flr((p.y+8)/128)
  if p.active_platform then
-  p.y+=p.active_platform.y-p.active_platform.prev_y
+  p.y+=p.active_platform.draw_y-p.active_platform.prev_y
  end
  move_player()
  if flr((p.y+8)/128)<prev_room_y and p.vy<0 then
@@ -163,6 +163,7 @@ function move_player()
  if moving_plat then
   p.on_platform=true
   p.active_platform=moving_plat_obj
+  p.y=moving_plat_obj.draw_y-8
  else
   p.on_platform=static_plat
   p.active_platform=nil
@@ -216,7 +217,7 @@ function move_player()
  if dx != 0 and (p.on_ground or p.on_platform) then
   p.state="walk"
   if p.active_platform then
-   p.y=p.active_platform.y-8
+   p.y=p.active_platform.draw_y-8
   else
    p.y=flr(p.y/8)*8
   end
@@ -296,7 +297,7 @@ function land()
  dust_particles(p.x+4,p.y+8)
  if p.vy>0 then
   if p.active_platform then
-   p.y=p.active_platform.y-8
+   p.y=p.active_platform.draw_y-8
   else
    p.y=flr((p.y+p.vy) / 8) * 8
   end

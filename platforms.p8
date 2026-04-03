@@ -29,6 +29,7 @@ function init_platforms()
      cx+=1
     end
     plat.y=plat.base_y
+    plat.draw_y=plat.base_y
     plat.prev_y=plat.base_y
     plat.t=0
     add(platforms,plat)
@@ -40,16 +41,17 @@ end
 function update_platforms()
  if abs(ctx-cx)>0 or abs(cty-cy)>0 then return end
  for plat in all(platforms) do
-  plat.prev_y=plat.y
+  plat.prev_y=plat.draw_y
   plat.t+=1/60
   plat.y=plat.base_y+sin(plat.t*0.08+plat.phase)*4
+  plat.draw_y=flr(plat.y+0.5)
  end
 end
 
 function draw_platforms()
  for plat in all(platforms) do
   for i=1,#plat.tiles do
-   spr(plat.tiles[i],plat.base_x+(i-1)*8,plat.y)
+   spr(plat.tiles[i],plat.base_x+(i-1)*8,plat.draw_y)
   end
  end
 end
@@ -73,7 +75,7 @@ function is_on_moving_platform(unit)
  for plat in all(platforms) do
   local plat_right=plat.base_x+#plat.tiles*8-1
   if px2>=plat.base_x and px1<=plat_right then
-   if foot_y>=plat.y and foot_y<plat.y+4 and unit.y+7<plat.y+1 then
+   if foot_y>=plat.draw_y and foot_y<plat.draw_y+4 and unit.y+7<plat.draw_y+1 then
     return true,plat
    end
   end
