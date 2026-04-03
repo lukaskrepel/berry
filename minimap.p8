@@ -59,8 +59,6 @@ function load_seen_rooms(slot_lo,slot_hi)
 end
 
 function unfog()
- local max_iters=512
- local iters=0
  for i=#seen,1,-1 do
   local fogtile=seen[i]
   if fogtile.fog>0 then
@@ -71,11 +69,9 @@ function unfog()
      if rnd{true,false,false} then
       fogmap[x][y]=0
      end
-     iters+=1
     end
    end
    fogtile.fog-=1
-   if iters>=max_iters then return end
   end
  end
 end
