@@ -20,6 +20,44 @@ function mark_seen(mx,my)
  add(seen,{x=mx,y=my,fog=30})
 end
 
+function save_seen_rooms(slot_lo,slot_hi)
+ local lo,hi=0,0
+ for _,s in ipairs(seen) do
+  local bit=s.y*8+s.x
+  if bit<16 then
+   lo=bor(lo,shl(1,bit))
+  else
+   hi=bor(hi,shl(1,bit-16))
+  end
+ end
+ dset(slot_lo,lo)
+ dset(slot_hi,hi)
+end
+
+function load_seen_rooms(slot_lo,slot_hi)
+ local lo=dget(slot_lo)
+ local hi=dget(slot_hi)
+ for slot=0,1 do
+  local bits=slot==0 and lo or hi
+  for bit=0,15 do
+   if band(bits,shl(1,bit))!=0 then
+    local rbit=slot*16+bit
+    local rmx=rbit%8
+    local rmy=flr(rbit/8)
+    mark_seen(rmx,rmy)
+    seen[#seen].fog=0
+    local tx=rmx*16
+    local ty=rmy*16
+    for x=tx,tx+15 do
+     for y=ty,ty+15 do
+      fogmap[x][y]=0
+     end
+    end
+   end
+  end
+ end
+end
+
 function unfog()
  local max_iters=512
  local iters=0

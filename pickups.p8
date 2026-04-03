@@ -36,6 +36,7 @@ function update_pickups()
     berries+=1
     spawn_particles(pickup.x+4,pickup.y+4)
     pixelmap[pickup.tx][pickup.ty]=pixelmap[pickup.tx][pickup.ty-1]
+    save_game()
    end
   end
  end

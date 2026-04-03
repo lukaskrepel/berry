@@ -4,6 +4,7 @@ __lua__
 --berry
 --by lukas krepel
 #include berry_code.p8
+#include savegame.p8
 #include camera.p8
 #include collision.p8
 #include debug.p8

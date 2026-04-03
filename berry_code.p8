@@ -3,6 +3,7 @@ version 42
 __lua__
 
 function _init()
+ init_savegame()
  poke(0x5f5c, 255)
  gravity=0.2
  init_player()
@@ -16,6 +17,7 @@ function _init()
  init_berrymenu()
  init_pie()
  init_music()
+ load_game()
  mx,my=0,0--todo
  flags={
   player=0,

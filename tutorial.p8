@@ -14,6 +14,12 @@ function init_tutorial()
  tut_finished=false
 end
 
+function skip_tutorial()
+ tut_finished=true
+ tut_countdown=0
+ tutbool={false,false,false,false}
+end
+
 function update_tutorial()
  if p.state=="jump" then
   tutbool[1]=false
